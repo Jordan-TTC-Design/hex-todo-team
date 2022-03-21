@@ -1,0 +1,23 @@
+{
+  "name": "hex-todo-team",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jordan-TTC-Design/hex-todo-team.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jordan-TTC-Design/hex-todo-team/issues"
+  },
+  "homepage": "https://github.com/Jordan-TTC-Design/hex-todo-team#readme",
+  "dependencies": {
+    "uuid": "^8.3.2"
+  }
+}
