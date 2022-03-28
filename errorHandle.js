@@ -1,16 +1,12 @@
-function errorHandle(res) {
-    const headers = {
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'PATCH, POST, GET,OPTIONS,DELETE',
-        'Content-Type': 'application/json'
-    }
+const {headers} = require('./baseHeader');
 
-    res.writeHead(400, headers);
+function errorHandle(status,res,message){
+    res.writeHead(status,headers);
     res.write(JSON.stringify({
-        'status': 'false',
-        'message': '欄位欄位未填寫正確或無此todo id'
+        'status':'false',
+        'message': message,
     }));
     res.end();
 }
-module.exports = errorHandle;
+
+module.exports =errorHandle;
