@@ -70,7 +70,7 @@ By Node.js 直播班 - 第八組
 
 ### Built With
 
-- [Node.js](https://nextjs.org/)
+- [Node.js](https://nodejs.org/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
