@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/Jordan-TTC-Design/hex-todo-team#readme",
   "dependencies": {
+    "dotenv": "^16.0.0",
+    "mongoose": "^6.2.10",
     "uuid": "^8.3.2"
   }
 }
