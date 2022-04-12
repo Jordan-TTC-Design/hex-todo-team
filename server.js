@@ -4,10 +4,9 @@ require('dotenv').config({ path: './config.env' });
 const errorHandle = require('./errorHandle');
 const resHandle = require('./resHandle');
 const { changtodos } = require('./baseHeader');
+const DATABASE = require('./constants/connection');
 const db = mongoose
-	.connect(
-		process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD),
-	)
+	.connect(DATABASE)
 	.then((value) => {
 		console.log(`info：連線成功`);
 	})
