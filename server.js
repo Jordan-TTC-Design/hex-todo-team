@@ -18,12 +18,13 @@ const db = mongoose
 
 const todos = [];
 
-const requestListener = (req, res) => {
+const requestListener = async (req, res) => {
 	let body = '';
 	req.on('data', (chunk) => {
 		body += chunk;
 	});
 	if (req.url == '/todos' && req.method == 'GET') {
+    const todos = await Todo.find();
 		resHandle(res, todos);
 	} else if (req.url == '/todos' && req.method == 'POST') {
 		req.on('end', () => {
