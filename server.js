@@ -20,9 +20,11 @@ const todos = [];
 
 const requestListener = async (req, res) => {
 	let body = '';
-	req.on('data', (chunk) => {
-		body += chunk;
+	req.on('data', chunk => {
+		body +=  chunk;	
+			
 	});
+	
 	if (req.url == '/todos' && req.method == 'GET') {
 		const todos = await Todo.find();
 		resHandle(res, todos);
@@ -30,42 +32,36 @@ const requestListener = async (req, res) => {
 		try {
 			const id = req.url.split('/').pop();
 			const todo = await Todo.findOne({ _id: id });
-			resHandle(res, todo);
+			await resHandle(res, todo);
 		} catch (error) {
-			errorHandle(400, res, error.message);
+		  await	errorHandle(400, res, error.message);
 		}
 	} else if (req.url == '/todos' && req.method == 'POST') {
 		req.on('end', async () => {
 			try {
+				console.log('1',body);
 				await changtodos(req, [], body);
 				const todos = await Todo.find({});
-				resHandle(res, todos);
+				await resHandle(res, todos);
 			} catch (error) {
-				errorHandle(400, res, error.message);
+				await errorHandle(400, res, error.message);
 			}
 		});
 	} else if (req.url == '/todos' && req.method == 'DELETE') {
-		todos.length = 0;
-		resHandle(res, todos);
+		const todos = await Todo.deleteMany({})		
+		await resHandle(res, todos);
 	} else if (req.url.startsWith('/todos/') && req.method == 'DELETE') {
 		const id = req.url.split('/').pop();
-		const index = todos.findIndex((e) => e.id == id);
-		if (index == -1) {
-			errorHandle(400, res, '欄位未填寫正確，無此todo id');
-		} else {
-			todos.splice(index, 1);
-			resHandle(res, todos);
-		}
+		const todos =await Todo.deleteOne({ _id: id })
+		resHandle(res, todos);
 	} else if (req.url.startsWith('/todos/') && req.method == 'PATCH') {
-		req.on('end', () => {
+		req.on('end', async () => {
 			try {
-				if (changtodos(req, todos, body)) {
-					resHandle(res, todos);
-				} else {
-					errorHandle(400, res, '欄位未填寫正確，無此todo id');
-				}
+				const todos =await changtodos(req, [], body)
+				await	resHandle(res, todos);
+				
 			} catch {
-				errorHandle(400, res, '欄位未填寫正確，無此todo id');
+				await errorHandle(400, res, '欄位未填寫正確，無此todo id');
 			}
 		});
 	} else if (req.method == 'OPTIONS') {
