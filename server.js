@@ -24,14 +24,22 @@ const requestListener = async (req, res) => {
 		body += chunk;
 	});
 	if (req.url == '/todos' && req.method == 'GET') {
-    const todos = await Todo.find();
+		const todos = await Todo.find();
 		resHandle(res, todos);
+	} else if (req.url.startsWith('/todos/') && req.method === 'GET') {
+		try {
+			const id = req.url.split('/').pop();
+			const todo = await Todo.findOne({ _id: id });
+			resHandle(res, todo);
+		} catch (error) {
+			errorHandle(400, res, error.message);
+		}
 	} else if (req.url == '/todos' && req.method == 'POST') {
 		req.on('end', () => {
 			try {
 				changtodos(req, todos, body);
 				resHandle(res, todos);
-			} catch {
+			} catch (error) {
 				errorHandle(400, res, '欄位未填寫正確，無此todo id');
 			}
 		});
@@ -66,18 +74,20 @@ const requestListener = async (req, res) => {
 	}
 };
 
-//add a data
-const testTodo = new Todo({
-	content: "new schema todo list",
-  completed: false,
-});
-//send data to mongo
-testTodo.save().then(() => {
-	console.log('成功新增資料');
-}).catch((error) => {
-	console.log(error);
-});
-
+// //add a data
+// const testTodo = new Todo({
+// 	content: 'new schema todo list',
+// 	completed: false,
+// });
+// //send data to mongo
+// testTodo
+// 	.save()
+// 	.then(() => {
+// 		console.log('成功新增資料');
+// 	})
+// 	.catch((error) => {
+// 		console.log(error);
+// 	});
 
 const server = http.createServer(requestListener);
 server.listen(process.env.PORT || 8080);
