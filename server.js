@@ -35,12 +35,13 @@ const requestListener = async (req, res) => {
 			errorHandle(400, res, error.message);
 		}
 	} else if (req.url == '/todos' && req.method == 'POST') {
-		req.on('end', () => {
+		req.on('end', async () => {
 			try {
-				changtodos(req, todos, body);
+				await changtodos(req, [], body);
+				const todos = await Todo.find({});
 				resHandle(res, todos);
 			} catch (error) {
-				errorHandle(400, res, '欄位未填寫正確，無此todo id');
+				errorHandle(400, res, error.message);
 			}
 		});
 	} else if (req.url == '/todos' && req.method == 'DELETE') {
