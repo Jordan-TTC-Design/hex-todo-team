@@ -5,6 +5,8 @@ const errorHandle = require('./errorHandle');
 const resHandle = require('./resHandle');
 const { changtodos } = require('./baseHeader');
 const DATABASE = require('./constants/connection');
+const Todo = require('./models/todo');
+
 const db = mongoose
 	.connect(DATABASE)
 	.then((value) => {
@@ -62,22 +64,19 @@ const requestListener = (req, res) => {
 		errorHandle(404, res, '無此網站路由');
 	}
 };
-// schema todo rule
-const todoSchema = {
-	title: String
-}
-// build model
-const Todo = mongoose.model('Todo', todoSchema);
+
 //add a data
 const testTodo = new Todo({
-	title: "new schema todo list"
+	content: "new schema todo list",
+  completed: false,
 });
 //send data to mongo
 testTodo.save().then(() => {
-	console.log('success');
+	console.log('成功新增資料');
 }).catch((error) => {
 	console.log(error);
 });
+
 
 const server = http.createServer(requestListener);
 server.listen(process.env.PORT || 8080);
