@@ -62,6 +62,22 @@ const requestListener = (req, res) => {
 		errorHandle(404, res, '無此網站路由');
 	}
 };
+// schema todo rule
+const todoSchema = {
+	title: String
+}
+// build model
+const Todo = mongoose.model('Todo', todoSchema);
+//add a data
+const testTodo = new Todo({
+	title: "new schema todo list"
+});
+//send data to mongo
+testTodo.save().then(() => {
+	console.log('success');
+}).catch((error) => {
+	console.log(error);
+});
 
 const server = http.createServer(requestListener);
 server.listen(process.env.PORT || 8080);
