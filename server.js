@@ -40,7 +40,7 @@ const requestListener = async (req, res) => {
 		req.on('end', async () => {
 			try {
 				console.log('1',body);
-				await changtodos(req, [], body);
+				await changtodos(req, body);
 				const todos = await Todo.find({});
 				await resHandle(res, todos);
 			} catch (error) {
@@ -57,11 +57,10 @@ const requestListener = async (req, res) => {
 	} else if (req.url.startsWith('/todos/') && req.method == 'PATCH') {
 		req.on('end', async () => {
 			try {
-				const todos =await changtodos(req, [], body)
+				const todos =await changtodos(req, body)
 				await	resHandle(res, todos);
-				
 			} catch {
-				await errorHandle(400, res, '欄位未填寫正確，無此todo id');
+				await errorHandle(400, error, '欄位未填寫正確，無此todo id');
 			}
 		});
 	} else if (req.method == 'OPTIONS') {
@@ -70,21 +69,6 @@ const requestListener = async (req, res) => {
 		errorHandle(404, res, '無此網站路由');
 	}
 };
-
-// //add a data
-// const testTodo = new Todo({
-// 	content: 'new schema todo list',
-// 	completed: false,
-// });
-// //send data to mongo
-// testTodo
-// 	.save()
-// 	.then(() => {
-// 		console.log('成功新增資料');
-// 	})
-// 	.catch((error) => {
-// 		console.log(error);
-// 	});
 
 const server = http.createServer(requestListener);
 server.listen(process.env.PORT || 8080);
