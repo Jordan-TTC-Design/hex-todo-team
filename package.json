@@ -7,6 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
+  "engines": {
+    "node": "v16.x"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Jordan-TTC-Design/hex-todo-team.git"
